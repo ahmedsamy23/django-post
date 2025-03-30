@@ -1,0 +1,37 @@
+$primary-color: #007bff;
+$shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+.navbar {
+    box-shadow: $shadow;
+}
+
+.card {
+    margin-bottom: 20px;
+    border: none;
+    box-shadow: $shadow;
+    transition: transform 0.2s;
+
+    &:hover {
+        transform: translateY(-5px);
+    }
+}
+
+.btn-custom {
+    background-color: $primary-color;
+    color: white;
+    border-radius: 5px;
+
+    &:hover {
+        background-color: darken($primary-color, 15%);
+    }
+}
+
+.container {
+    max-width: 1200px;
+}
