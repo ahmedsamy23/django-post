@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>Home Page</h1>
+    <h3>{{ title }}</h3>
+    <a href="{% url 'post:add_post' %}" class="btn btn-custom mb-3">Add Post</a>
+    
+    {% for post in post_list %}
+        <div class="card">
+            <div class="card-body">
+                <p><a href="{% url 'post:post_detail' post.slug %}" class="card-link">{{ post }}</a></p>
+            </div>
+        </div>
+    {% empty %}
+        <p>No posts available.</p>
+    {% endfor %}
+
+    <p><a href="{% url 'post:contact' %}" class="btn btn-link">Contact</a></p>
+{% endblock %}

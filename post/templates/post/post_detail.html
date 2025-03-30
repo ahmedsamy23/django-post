@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">{{ post.title }}</h2>
+            <p class="card-text">{{ post.content }}</p>
+            <p class="text-muted">Published: {{ post.created_at }}</p>
+            <a href="{% url 'post:update_post' post.slug %}" class="btn btn-custom mr-2">Update</a>
+            <a href="{% url 'post:delete_post' post.slug %}" class="btn btn-danger">Delete</a>
+        </div>
+    </div>
+{% endblock %}
