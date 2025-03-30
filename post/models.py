@@ -35,8 +35,7 @@ class CommentPost(models.Model):
 
     # Define fields here
 
-    Model = models.ForeignKey(Post , on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
+    post = models.ForeignKey(Post , on_delete=models.CASCADE)
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -48,4 +47,4 @@ class CommentPost(models.Model):
 
     def __str__(self):
         """Unicode representation of CommentPost."""
-        return self.name
+        return f'{self.post.title} - {self.comment}'

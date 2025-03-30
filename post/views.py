@@ -1,7 +1,7 @@
 from django.shortcuts import render , redirect , get_object_or_404
-from .models import Post
+from .models import Post , CommentPost
 from django.views.generic import ListView , DetailView , CreateView , UpdateView , DeleteView , FormView
-from .forms import ContactForm , PostForm
+from .forms import ContactForm , PostForm , CommentForm
 from  django.urls import reverse
 
 # Create your views here.
@@ -65,11 +65,24 @@ class FormView(FormView):
 class PostDetail(DetailView):
     model = Post ## in template [object_list , post_list]
     
-    # add comment to the post
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['comment_form'] = CommentForm()
-    #     return context got the object from the database and add it to the context
+    # add commentForm to the post detail page
+    def get_context_data(self , **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comment_form'] = CommentForm()
+        context['comments'] = CommentPost.objects.filter(post=self.object) # self.object is the post object
+        return context
+
+    def post(self , request , *args , **kwargs):
+        self.object = self.get_object()
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = self.object
+            comment.save()
+            return redirect(reverse('post:post_detail' , kwargs={'slug':self.object.slug}))
+        else:
+            return redirect(reverse('post:post_detail' , kwargs={'slug':self.object.slug}))
+
 
     # template_name = 'post/post_detail.html'
     # context_object_name = 'post' ## in template [post]
