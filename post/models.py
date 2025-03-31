@@ -35,7 +35,7 @@ class CommentPost(models.Model):
 
     # Define fields here
 
-    post = models.ForeignKey(Post , on_delete=models.CASCADE)
+    post = models.ForeignKey(Post , on_delete=models.CASCADE , related_name='comment_post')
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 

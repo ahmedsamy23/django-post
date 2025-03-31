@@ -1,21 +1,24 @@
-// تأكد من تحميل DOM قبل تنفيذ الكود
-document.addEventListener('DOMContentLoaded', function () {
-    // مثال: إضافة تنبيه عند النقر على زر مخصص
-    const customButtons = document.querySelectorAll('.btn-custom');
-    customButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            console.log('Custom button clicked!');
-        });
+// Smooth scrolling for navigation links
+document.querySelectorAll('.nav-link, .btn-link').forEach(link => {
+    link.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href.startsWith('#')) {
+            e.preventDefault();
+            document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
+        }
     });
+});
 
-    // تأثير بسيط على الكروت عند التمرير
+// Fade-in animation for cards on page load
+document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.card');
-    cards.forEach(card => {
-        card.addEventListener('mouseenter', function () {
-            this.style.backgroundColor = '#f1f3f5';
-        });
-        card.addEventListener('mouseleave', function () {
-            this.style.backgroundColor = 'white';
-        });
+    cards.forEach((card, index) => {
+        setTimeout(() => {
+            card.style.opacity = '0';
+            card.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+                card.style.opacity = '1';
+            }, 100 * index); // تأخير متتالي لكل بطاقة
+        }, 100);
     });
 });

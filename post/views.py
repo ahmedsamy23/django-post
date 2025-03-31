@@ -2,6 +2,7 @@ from django.shortcuts import render , redirect , get_object_or_404
 from .models import Post , CommentPost
 from django.views.generic import ListView , DetailView , CreateView , UpdateView , DeleteView , FormView
 from .forms import ContactForm , PostForm , CommentForm
+from django.db.models import Q
 from  django.urls import reverse
 
 # Create your views here.
@@ -44,9 +45,12 @@ class PostList(ListView):
     # in template paginator name is paginator 
     # extra_context = {'title': 'Post List'} # if you want to add extra context to the template
     # queryset = Post.objects.filter(active=True) # if you want to filter the post by active = True
+
     def get_queryset(self):
-        return Post.objects.filter(active=True) # if you want to filter the post by active = True
-    
+        search = self.request.GET.get('search')
+        if search:
+            return Post.objects.filter(Q(title__icontains=search) | Q(content__icontains=search)) # if you want to filter the post by active = True
+        return Post.objects.all()
     def get_context_data(self , **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Posts List'
