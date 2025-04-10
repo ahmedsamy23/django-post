@@ -1,9 +1,10 @@
-from django.shortcuts import render , redirect , get_object_or_404
+from django.shortcuts import redirect
 from .models import Post , CommentPost
 from django.views.generic import ListView , DetailView , CreateView , UpdateView , DeleteView , FormView
 from .forms import ContactForm , PostForm , CommentForm
 from django.db.models import Q
 from  django.urls import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
@@ -95,7 +96,7 @@ class PostDetail(DetailView):
     
 
 
-class PostCreate(CreateView):
+class PostCreate(LoginRequiredMixin , CreateView):
     model = Post # template name for CreateView is post_form.html
     template_name = 'post/post_form.html' 
     fields = ['title' , 'content' , 'image']

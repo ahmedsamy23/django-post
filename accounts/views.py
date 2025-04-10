@@ -1,14 +1,9 @@
-from ast import Delete
-from typing import override
 from django.urls import reverse_lazy
-from django.contrib.auth import login
 from django.views.generic import CreateView , UpdateView , DetailView , DeleteView 
 from .forms import SignupForm , UserForm , ProfileForm
 from .models import Profile
-from django.shortcuts import render , redirect
-
+from django.shortcuts import redirect
 # Create your views here.
-
 
 class SignupView(CreateView):
     form_class = SignupForm

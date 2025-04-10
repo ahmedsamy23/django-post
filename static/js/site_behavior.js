@@ -1,22 +1,27 @@
-// site_behavior.js
-document.addEventListener("DOMContentLoaded", function () {
-    // إضافة تأثير عند فتح/إغلاق الـ navbar على الأجهزة الصغيرة
-    const navbarToggler = document.querySelector(".navbar-toggler");
-    const navbarCollapse = document.querySelector("#navbarNav");
-
-    if (navbarToggler && navbarCollapse) {
-        navbarToggler.addEventListener("click", function () {
-            navbarCollapse.classList.toggle("show");
+// Smooth Scroll for Navbar Links
+document.addEventListener('DOMContentLoaded', function () {
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop,
+                    behavior: 'smooth'
+                });
+            } else {
+                window.location.href = targetId; // إذا كان الرابط خارجي
+            }
         });
+    });
 
-        // إغلاق الـ navbar عند الضغط على رابط
-        const navLinks = document.querySelectorAll(".nav-link");
-        navLinks.forEach(link => {
-            link.addEventListener("click", function () {
-                if (navbarCollapse.classList.contains("show")) {
-                    navbarCollapse.classList.remove("show");
-                }
-            });
-        });
-    }
+    // Fade-in effect for Hero Section
+    const heroSection = document.querySelector('.hero-section');
+    heroSection.style.opacity = 0;
+    setTimeout(() => {
+        heroSection.style.transition = 'opacity 1s ease-in-out';
+        heroSection.style.opacity = 1;
+    }, 500);
 });
