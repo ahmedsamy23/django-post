@@ -1,0 +1,38 @@
+/* auth_pages.css */
+.apply_job_form {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.alert {
+    font-size: 0.9rem;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.boxed-btn3 {
+    background: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    display: inline-block;
+    transition: background 0.3s ease;
+}
+
+.boxed-btn3:hover {
+    background: #0056b3;
+    text-decoration: none;
+    color: #fff;
+}
+
+.text-center a {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.text-center a:hover {
+    color: #0056b3;
+}

@@ -1,0 +1,50 @@
+/* accounts_layout.css */
+.bradcam_area {
+    background-size: cover;
+    padding: 100px 0;
+    text-align: center;
+}
+
+.bradcam_area.bradcam_bg_1 {
+    background-image: url('../images/bradcam_bg.jpg'); /* Add a background image */
+    background-size: cover;
+    background-position: center;
+}
+
+.bradcam_area.bradcam_bg_1 {
+    background-color: #f0f0f0;
+}
+
+.bradcam_text h3 {
+    color: #fff;
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.job_details_area {
+    padding: 50px 0;
+}
+
+.apply_job_form {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.boxed-btn3 {
+    background: #28a745;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    display: inline-block;
+    transition: background 0.3s ease;
+}
+
+.boxed-btn3:hover {
+    background: #218838;
+    text-decoration: none;
+    color: #fff;
+}

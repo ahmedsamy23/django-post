@@ -22,7 +22,9 @@ from  django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('' , include('post.urls' , namespace='post'))
+    path('' , include('post.urls' , namespace='post')),
+    path('accounts/' , include('django.contrib.auth.urls')), # include all urls of django.contrib.auth
+    path('accounts/' , include('accounts.urls' , namespace='accounts')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

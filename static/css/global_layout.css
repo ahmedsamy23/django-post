@@ -1,0 +1,52 @@
+/* global_layout.css */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.navbar {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px 20px;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff;
+    transition: color 0.3s ease;
+}
+
+.navbar-brand:hover {
+    color: #0056b3;
+    text-decoration: none;
+}
+
+.nav-link {
+    font-size: 1.1rem;
+    color: #555;
+    margin-left: 15px;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #007bff;
+}
+
+.container {
+    max-width: 1200px;
+    margin-top: 20px;
+    padding: 0 15px;
+}
+
+/* تحسين الـ responsive design */
+@media (max-width: 768px) {
+    .navbar-nav {
+        text-align: center;
+        padding: 10px 0;
+    }
+    .nav-link {
+        margin: 5px 0;
+    }
+}
