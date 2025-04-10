@@ -1,12 +1,13 @@
 from django.db import models
 from django.utils.text import slugify
+from django.contrib.auth.models import User
 # Create your models here.
 
 class Post(models.Model):
     """Model definition for Post."""
 
     # Define fields here
-
+    user = models.ForeignKey(User , on_delete=models.CASCADE , null=True , blank=True)
     title = models.CharField(max_length=50)
     content = models.TextField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -35,7 +36,8 @@ class CommentPost(models.Model):
 
     # Define fields here
 
-    post = models.ForeignKey(Post , on_delete=models.CASCADE , related_name='comment_post')
+    user = models.ForeignKey(User , on_delete=models.CASCADE , null=True , blank=True)
+    post = models.ForeignKey(Post , on_delete=models.CASCADE , related_name='comment_post' , null=True , blank=True)
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 

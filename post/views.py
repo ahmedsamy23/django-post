@@ -1,3 +1,4 @@
+from typing import override
 from django.shortcuts import redirect
 from .models import Post , CommentPost
 from django.views.generic import ListView , DetailView , CreateView , UpdateView , DeleteView , FormView
@@ -83,6 +84,7 @@ class PostDetail(DetailView):
         if form.is_valid():
             comment = form.save(commit=False)
             comment.post = self.object
+            comment.user = request.user
             comment.save()
             return redirect(reverse('post:post_detail' , kwargs={'slug':self.object.slug}))
         else:
@@ -101,6 +103,9 @@ class PostCreate(LoginRequiredMixin , CreateView):
     template_name = 'post/post_form.html' 
     fields = ['title' , 'content' , 'image']
     success_url = '/'
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 # i Make UpdateView Use The Same Template I Used For CreateView or FormView 
 class PostUpdate(UpdateView):
