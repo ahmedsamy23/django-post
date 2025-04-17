@@ -3,51 +3,56 @@
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block body %}
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h2 class="card-title">{{ post.title }}</h2>
-                    {% if post.image %}
-                        <img src="{{ post.image.url }}" class="img-fluid mb-3" alt="{{ post.title }}">
-                    {% endif %}
-                    <p class="card-text">{{ post.content }}</p>
-                    <p class="text-muted">Published: {{ post.created_at }}</p>
-                    <a href="{% url 'post:update_post' post.slug %}" class="btn btn-custom mr-2">Update</a>
-                    <a href="{% url 'post:delete_post' post.slug %}" class="btn btn-danger">Delete</a>
-                </div>
-            </div>
-
-            <!-- Comment Form -->
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h3>Add a Comment</h3>
-                </div>
-                <div class="card-body">
-                    <form action="" method="post">
-                        {% csrf_token %}
-                        {{ comment_form.as_p }}
-                        <input type="submit" value="Submit Comment" class="btn btn-custom">
-                    </form>
-                </div>
-            </div>
-
-            <!-- Display Comments -->
-            <div class="card">
-                <div class="card-header">
-                    <h3>Comments</h3>
-                </div>
-                <div class="card-body">
-                    {% for comment in comments %}
-                        <div class="border-bottom pb-2 mb-2">
-                            <p>{{ comment.comment }}</p>
-                            <small class="text-muted">Posted on: {{ comment.created_at }}</small>
+    <section id="post-detail" class="section">
+        <div class="container" data-aos="fade-up">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="post-entry lg">
+                        {% if post.image %}
+                            <a href="#"><img src="{{ post.image.url }}" alt="" class="img-fluid mb-4"></a>
+                        {% endif %}
+                        <div class="post-meta">
+                            <span class="date">{{ post.category.name|default:"Uncategorized" }}</span>
+                            <span class="mx-1">•</span>
+                            <span>{{ post.created_at|date:"M dS Y" }}</span>
                         </div>
-                    {% empty %}
-                        <p>No comments yet. Be the first to comment!</p>
-                    {% endfor %}
+                        <h2>{{ post.title }}</h2>
+                        <p>{{ post.content }}</p>
+                        <div class="d-flex align-items-center author">
+                            <div class="name">
+                                <h3 class="m-0 p-0">By {{ post.user.username }}</h3>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <a href="{% url 'post:update_post' post.slug %}" class="btn btn-primary me-2">Update</a>
+                            <a href="{% url 'post:delete_post' post.slug %}" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+
+                    <!-- Comment Form -->
+                    <div class="mt-5">
+                        <h3>Add a Comment</h3>
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            {{ comment_form.as_p }}
+                            <button type="submit" class="btn btn-primary">Submit Comment</button>
+                        </form>
+                    </div>
+
+                    <!-- Display Comments -->
+                    <div class="mt-5">
+                        <h3>Comments</h3>
+                        {% for comment in comments %}
+                            <div class="border-bottom pb-2 mb-2">
+                                <p>{{ comment.comment }}</p>
+                                <small class="text-muted">Posted by {{ comment.user.username }} on {{ comment.created_at|date:"M dS Y" }}</small>
+                            </div>
+                        {% empty %}
+                            <p>No comments yet. Be the first to comment!</p>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 {% endblock %}

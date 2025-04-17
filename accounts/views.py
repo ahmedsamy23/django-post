@@ -2,6 +2,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView , UpdateView , DetailView , DeleteView 
 from .forms import SignupForm , UserForm , ProfileForm
 from .models import Profile
+from post.models import Category
 from django.shortcuts import redirect
 # Create your views here.
 
@@ -18,6 +19,11 @@ class ProfileView(DetailView):
     context_object_name = 'profile'
     def get_object(self):
         return self.request.user.profile
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
 class ProfileEditView(UpdateView):
     model = Profile
@@ -48,6 +54,7 @@ class ProfileEditView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['userform'] = UserForm(instance=self.request.user)
         context['profileform'] = ProfileForm(instance=self.get_object())
+        context['categories'] = Category.objects.all()
         return context
     
 class DeleteProfileView(DeleteView):

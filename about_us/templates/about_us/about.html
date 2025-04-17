@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us{% endblock %}
+
+{% block body %}
+    <!-- Page Title -->
+    <div class="page-title">
+        <div class="container d-lg-flex justify-content-between align-items-center">
+            <h1 class="mb-2 mb-lg-0">About</h1>
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="{% url 'post:home' %}">Home</a></li>
+                    <li class="current">About</li>
+                </ol>
+            </nav>
+        </div>
+    </div><!-- End Page Title -->
+
+    <!-- About Section -->
+    <section id="about" class="about section">
+        <div class="container">
+            <div class="row gy-4">
+                {% for item in about %}
+                    <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="100">
+                        <p class="who-we-are">Who We Are</p>
+                        <h3>{{ item.title }}</h3>
+                        <p class="fst-italic">{{ item.description }}</p>
+                        <ul>
+                            <li><i class="bi bi-check-circle"></i> <span>We are passionate about sharing knowledge and insights.</span></li>
+                            <li><i class="bi bi-check-circle"></i> <span>Our team is dedicated to creating impactful content.</span></li>
+                            <li><i class="bi bi-check-circle"></i> <span>Join us on a journey of discovery and learning.</span></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6 about-images" data-aos="fade-up" data-aos-delay="200">
+                        <div class="row gy-4">
+                          <div class="col-lg-6">
+                            <img src="{{ item.image.url }}" class="img-fluid" alt="{{ item.title }}">
+                          </div>
+                          <div class="col-lg-6">
+                            <div class="row gy-4">
+                              <div class="col-lg-12">
+                                <img src="{% static 'img/about-company-2.jpg' %}" class="img-fluid" alt="">
+                              </div>
+                              <div class="col-lg-12">
+                                <img src="{% static 'img/about-company-3.jpg' %}" class="img-fluid" alt="">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-12 text-center">
+                        <p>No About information available.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section><!-- /About Section -->
+{% endblock %}

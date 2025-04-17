@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ category.name }} Posts{% endblock %}
+
+{% block body %}
+    <section id="category-posts" class="culture-category section">
+        <div class="container section-title" data-aos="fade-up">
+            <div class="section-title-container d-flex align-items-center justify-content-between">
+                <h2>{{ category.name }}</h2>
+                <p><a href="{% url 'post:home' %}">Back to Home</a></p>
+            </div>
+        </div>
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="row">
+                        {% for post in posts %}
+                            <div class="col-lg-4">
+                                <div class="post-entry">
+                                    <a href="{% url 'post:post_detail' post.slug %}">
+                                        {% if post.image %}
+                                            <img src="{{ post.image.url }}" alt="" class="img-fluid">
+                                        {% else %}
+                                            <img src="{% static 'img/default-post.jpg' %}" alt="" class="img-fluid">
+                                        {% endif %}
+                                    </a>
+                                    <div class="post-meta">
+                                        <span class="date">{{ post.category.name|default:"Uncategorized" }}</span>
+                                        <span class="mx-1">•</span>
+                                        <span>{{ post.created_at|date:"M dS Y" }}</span>
+                                    </div>
+                                    <h2><a href="{% url 'post:post_detail' post.slug %}">{{ post.title }}</a></h2>
+                                    <p>{{ post.content|truncatewords:20 }}</p>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="col-12">
+                                <p>No posts found in this category.</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

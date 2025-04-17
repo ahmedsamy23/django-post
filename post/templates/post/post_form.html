@@ -3,20 +3,64 @@
 {% block title %}Add Post{% endblock %}
 
 {% block body %}
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h1>Add Post</h1>
-                </div>
-                <div class="card-body">
+
+<div class="page-title">
+    <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">Add Post</h1>
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="{% url 'post:home' %}">Home</a></li>
+                <li class="current">Add Post</li>
+            </ol>
+        </nav>
+    </div>
+</div><!-- End Page Title -->
+
+    <section id="add-post" class="section">
+        <div class="container section-title" data-aos="fade-up" data-aos-delay="100">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
                     <form action="" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        {{ form.as_p }}
-                        <input type="submit" value="Add Post" class="btn btn-custom">
+                        <div class="mb-4">
+                            <label for="{{ form.title.id_for_label }}" class="form-label">{{ form.title.label }}</label>
+                            <input type="text" name="{{ form.title.name }}" id="{{ form.title.id_for_label }}" class="form-control" placeholder="Post Title" value="{{ form.title.value|default_if_none:'' }}" required>
+                            {% if form.title.errors %}
+                                <div class="text-danger">{{ form.title.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-4">
+                            <label for="{{ form.content.id_for_label }}" class="form-label">{{ form.content.label }}</label>
+                            <textarea name="{{ form.content.name }}" id="{{ form.content.id_for_label }}" class="form-control" rows="5" placeholder="Write your post content here..." required>{{ form.content.value|default_if_none:'' }}</textarea>
+                            {% if form.content.errors %}
+                                <div class="text-danger">{{ form.content.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-4">
+                            <label for="{{ form.image.id_for_label }}" class="form-label">{{ form.image.label }}</label>
+                            <input type="file" name="{{ form.image.name }}" id="{{ form.image.id_for_label }}" class="form-control">
+                            {% if form.image.errors %}
+                                <div class="text-danger">{{ form.image.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-4">
+                            <label for="{{ form.category.id_for_label }}" class="form-label">{{ form.category.label }}</label>
+                            <select name="{{ form.category.name }}" id="{{ form.category.id_for_label }}" class="form-control" required>
+                                <option value="" disabled {% if not form.category.value %}selected{% endif %}>Select a category</option>
+                                {% for category in categories %}
+                                    <option value="{{ category.id }}" {% if form.category.value == category.id|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>
+                                {% endfor %}
+                            </select>
+                            {% if form.category.errors %}
+                                <div class="text-danger">{{ form.category.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary px-4 py-2">Add Post</button>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 {% endblock %}

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'post',
     'accounts',
+    'about_us',
     'bootstrap4',
 ]
 

@@ -4,7 +4,7 @@ from .models import Post , CommentPost
 class PostForm(forms.Form):
     class Meta:
         model = Post
-        fields = ['title' , 'content' , 'image']
+        fields = ['title' , 'content' , 'image' , 'category']
 
 
 class ContactForm(forms.Form):

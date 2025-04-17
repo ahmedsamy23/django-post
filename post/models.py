@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import CharField
 from django.utils.text import slugify
 from django.contrib.auth.models import User
 # Create your models here.
@@ -13,7 +14,8 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='post-image/' , null=True , blank=True)
     active = models.BooleanField(default=False)
-
+    category = models.ForeignKey("Category" , on_delete=models.CASCADE , null=True , blank=True)
+    
     slug = models.SlugField(blank=True , null=True)
 
     def save(self , *args , **kwargs):
@@ -30,6 +32,12 @@ class Post(models.Model):
         """Unicode representation of Post."""
         return self.title
 
+
+class Category(models.Model):
+    name = models.CharField(max_length=50)
+    
+    def __str__(self):
+        return self.name
 
 class CommentPost(models.Model):
     """Model definition for CommentPost."""

@@ -25,6 +25,7 @@ urlpatterns = [
     path('' , include('post.urls' , namespace='post')),
     path('accounts/' , include('django.contrib.auth.urls')), # include all urls of django.contrib.auth
     path('accounts/' , include('accounts.urls' , namespace='accounts')),
+    path('about_us/' , include('about_us.urls' , namespace='about_us')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

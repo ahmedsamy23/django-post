@@ -1,6 +1,6 @@
 from typing import override
 from django.shortcuts import redirect
-from .models import Post , CommentPost
+from .models import Post , CommentPost , Category
 from django.views.generic import ListView , DetailView , CreateView , UpdateView , DeleteView , FormView
 from .forms import ContactForm , PostForm , CommentForm
 from django.db.models import Q
@@ -35,7 +35,7 @@ it take the name of the model and add _detail
 class PostList(ListView):
     model = Post
     ordering = ['-created_at']
-    # template_name = 'post/post_list.html'
+    template_name = 'post/home.html'
     # context_object_name = 'post_list' ## in template [object_list , post_list]
     # paginate_by = 3 # in template paginator name is page_obj
     # page_kwarg = 'page' # if you want to change the name of the page in the url
@@ -53,9 +53,11 @@ class PostList(ListView):
         if search:
             return Post.objects.filter(Q(title__icontains=search) | Q(content__icontains=search)) # if you want to filter the post by active = True
         return Post.objects.all()
+        
     def get_context_data(self , **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Posts List'
+        context['categories'] = Category.objects.all()
         return context
 
 class FormView(FormView):
@@ -67,6 +69,10 @@ class FormView(FormView):
         #print(form.cleaned_data)
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
 class PostDetail(DetailView):
     model = Post ## in template [object_list , post_list]
@@ -76,6 +82,7 @@ class PostDetail(DetailView):
         context = super().get_context_data(**kwargs)
         context['comment_form'] = CommentForm()
         context['comments'] = CommentPost.objects.filter(post=self.object) # self.object is the post object
+        context['categories'] = Category.objects.all()
         return context
 
     def post(self , request , *args , **kwargs):
@@ -84,8 +91,11 @@ class PostDetail(DetailView):
         if form.is_valid():
             comment = form.save(commit=False)
             comment.post = self.object
-            comment.user = request.user
-            comment.save()
+            if request.user.is_authenticated:
+                comment.user = request.user
+                comment.save()
+            else :
+                return redirect(reverse('login'))
             return redirect(reverse('post:post_detail' , kwargs={'slug':self.object.slug}))
         else:
             return redirect(reverse('post:post_detail' , kwargs={'slug':self.object.slug}))
@@ -101,17 +111,21 @@ class PostDetail(DetailView):
 class PostCreate(LoginRequiredMixin , CreateView):
     model = Post # template name for CreateView is post_form.html
     template_name = 'post/post_form.html' 
-    fields = ['title' , 'content' , 'image']
+    fields = ['title' , 'content' , 'image' , 'category']
     success_url = '/'
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 # i Make UpdateView Use The Same Template I Used For CreateView or FormView 
 class PostUpdate(UpdateView):
     model = Post
-    fields = ['title' , 'content' , 'image']
-    template_name = 'post/form.html' # template name for UpdateView is post_form.html
+    fields = ['title' , 'content' , 'image' , 'category']
+    template_name = 'post/post_form.html' # template name for UpdateView is post_form.html
     def get_success_url(self):
         return reverse('post:post_detail' , kwargs={'slug':self.object.slug})
     # methods
@@ -124,3 +138,19 @@ class PostDelete(DeleteView):
     template_name = 'post/delete_post.html'
 
 
+class CategoryView(ListView):
+    model = Post
+    template_name = 'post/category_list.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        category_id = self.kwargs['pk']
+        return Post.objects.filter(category_id=category_id).order_by('-created_at')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category = Category.objects.get(pk=self.kwargs['pk'])
+        context['category'] = category
+        context['title'] = f'{Category.name} Posts'
+        context['categories'] = Category.objects.all()  # Add categories for base.html
+        return context
