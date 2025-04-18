@@ -23,10 +23,12 @@
                                 <h3 class="m-0 p-0">By {{ post.user.username }}</h3>
                             </div>
                         </div>
+                        {% if request.user == post.user %}
                         <div class="mt-4">
                             <a href="{% url 'post:update_post' post.slug %}" class="btn btn-primary me-2">Update</a>
                             <a href="{% url 'post:delete_post' post.slug %}" class="btn btn-danger">Delete</a>
                         </div>
+                        {% endif %}
                     </div>
 
                     <!-- Comment Form -->

@@ -36,6 +36,7 @@ class PostList(ListView):
     model = Post
     ordering = ['-created_at']
     template_name = 'post/home.html'
+    paginate_by = 10 
     # context_object_name = 'post_list' ## in template [object_list , post_list]
     # paginate_by = 3 # in template paginator name is page_obj
     # page_kwarg = 'page' # if you want to change the name of the page in the url
@@ -121,6 +122,7 @@ class PostCreate(LoginRequiredMixin , CreateView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
         return context
+        
 # i Make UpdateView Use The Same Template I Used For CreateView or FormView 
 class PostUpdate(UpdateView):
     model = Post
@@ -128,9 +130,11 @@ class PostUpdate(UpdateView):
     template_name = 'post/post_form.html' # template name for UpdateView is post_form.html
     def get_success_url(self):
         return reverse('post:post_detail' , kwargs={'slug':self.object.slug})
-    # methods
-    # def post(self, request, *args, **kwargs):
-    #     return super().post(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
 class PostDelete(DeleteView):
     model = Post
